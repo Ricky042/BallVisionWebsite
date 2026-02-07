@@ -1,25 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from . import models, database, auth
+
+from app.auth import router as auth_router
+from app.database import Base, engine
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# --- CORS for frontend dev ---
-origins = ["http://localhost:5173"]
+# CORS MUST be added immediately after app creation
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:8000",    # Vite dev server
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- Routers ---
-app.include_router(auth.router)
-
-# --- Create tables ---
-models.Base.metadata.create_all(bind=database.engine)
-
-@app.get("/")
-def root():
-    return {"message": "Backend is running"}
+app.include_router(auth_router)

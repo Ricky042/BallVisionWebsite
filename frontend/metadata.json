@@ -1,0 +1,7 @@
+{
+  "name": "BallVision AI - Elite Scout Onboarding",
+  "description": "A high-fidelity, futuristic onboarding system for elite sports analytics, featuring identity initialization, organizational mapping, and secure terminal access.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
